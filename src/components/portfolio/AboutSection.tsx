@@ -1,9 +1,16 @@
 import { useState } from "react";
-import { Send, Github, Linkedin, Mail, CheckCircle } from "lucide-react";
+import emailjs from "@emailjs/browser";
+import { Send } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
+
+const infoItems = [
+  ["Location", "Kathmandu, Nepal"],
+  // ["Availability", "Open to full-time and freelance work"],
+  ["Education", "BSc (Hons) Computer Systems Engineering - ISMT / University of Sunderland"],
+];
 
 export function AboutSection() {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -17,82 +24,89 @@ export function AboutSection() {
     e.preventDefault();
     setIsSubmitting(true);
 
-    // Simulate form submission
-    await new Promise((resolve) => setTimeout(resolve, 1000));
+    try {
+      const templateParams = {
+        from_name: formData.name,
+        from_email: formData.email,
+        message: formData.message,
+      };
 
-    toast.success("Message sent successfully!", {
-      description: "I'll get back to you as soon as possible.",
-    });
+      await emailjs.send(
+        "service_5it2mj8",
+        "template_b3x2pji",
+        templateParams,
+        "e8XTW7ns5OoPWTEFz"
+      );
 
-    setFormData({ name: "", email: "", message: "" });
-    setIsSubmitting(false);
+      toast.success("Message sent successfully!", {
+        description: "I'll get back to you as soon as possible.",
+      });
+
+      setFormData({ name: "", email: "", message: "" });
+    } catch (error) {
+      console.error("EmailJS error:", error);
+      toast.error("Something went wrong.", {
+        description: "Please try again in a moment.",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
+  const inputClass =
+    "border-border bg-transparent text-foreground placeholder:text-muted-foreground focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:border-primary";
+
   return (
-    <section id="about" className="py-16 md:py-24 pb-32 md:pb-24 bg-secondary/30">
+    <section id="contact" className="py-16 pb-32 md:py-24">
       <div className="section-container">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16">
-          {/* About Me */}
+        <div className="grid grid-cols-1 gap-12 lg:grid-cols-2 lg:gap-16">
           <div>
-            <h2 className="text-2xl md:text-3xl font-bold mb-6">About Me</h2>
-            <div className="space-y-4 text-muted-foreground leading-relaxed">
+            <h2 className="section-heading">About</h2>
+            <div className="space-y-4 leading-7 text-[#d5d5d5]">
               <p>
-                I'm a Junior Developer based in Kathmandu, Nepal, currently working on
-                production IoT systems at Nepal Digital Systems. My journey into tech
-                started with curiosity about how devices communicate with the cloud.
+                I'm a Full Stack Developer based in Kathmandu, Nepal, currently
+                working on production IoT systems at Nepal Digital Systems. My
+                journey into tech started with curiosity about how devices
+                communicate with the cloud.
               </p>
               <p>
-                At work, I contribute to <span className="text-foreground">garud.cloud</span> — 
-                an industrial telemetry platform that processes real-time sensor data 
-                from equipment across various industries. I work across the full stack, 
-                from designing REST APIs to building React dashboards.
+                At work, I contribute to{" "}
+                <span className="text-foreground">garud.cloud</span>, an
+                industrial telemetry platform that processes real-time sensor
+                data from equipment across various industries. I work across the
+                full stack, from designing REST APIs to building React
+                dashboards.
               </p>
               <p>
-                When I'm not coding, I'm exploring new technologies, contributing to 
-                open-source projects, or learning about system architecture and cloud 
-                infrastructure.
+                When I'm not coding, I'm exploring new technologies,
+                contributing to open-source projects, or learning about system
+                architecture and cloud infrastructure.
               </p>
             </div>
 
-            {/* Quick Links */}
-            <div className="mt-8">
-              <h3 className="font-semibold mb-4">Let's Connect</h3>
-              <div className="flex flex-wrap gap-3">
-                <a
-                  href="https://github.com/dipeshbist"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center gap-2 px-4 py-2 glass-card rounded-lg card-hover text-sm"
+            <dl className="mt-8 divide-y divide-border border-y border-border">
+              {infoItems.map(([label, value]) => (
+                <div
+                  key={label}
+                  className="grid gap-1 py-4 sm:grid-cols-[140px_1fr]"
                 >
-                  <Github className="w-4 h-4" />
-                  GitHub
-                </a>
-                <a
-                  href="https://linkedin.com/in/dipeshbist"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center gap-2 px-4 py-2 glass-card rounded-lg card-hover text-sm"
-                >
-                  <Linkedin className="w-4 h-4" />
-                  LinkedIn
-                </a>
-                <a
-                  href="mailto:dipesh@example.com"
-                  className="flex items-center gap-2 px-4 py-2 glass-card rounded-lg card-hover text-sm"
-                >
-                  <Mail className="w-4 h-4" />
-                  Email
-                </a>
-              </div>
-            </div>
+                  <dt className="font-mono text-xs text-muted-foreground">
+                    {label}
+                  </dt>
+                  <dd className="text-sm text-foreground">{value}</dd>
+                </div>
+              ))}
+            </dl>
           </div>
 
-          {/* Contact Form */}
           <div>
-            <h2 className="text-2xl md:text-3xl font-bold mb-6">Get In Touch</h2>
+            <h2 className="section-heading">Get in touch</h2>
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
-                <label htmlFor="name" className="block text-sm font-medium mb-2">
+                <label
+                  htmlFor="name"
+                  className="mb-2 block text-sm font-medium text-foreground"
+                >
                   Name
                 </label>
                 <Input
@@ -103,11 +117,14 @@ export function AboutSection() {
                   }
                   placeholder="Your name"
                   required
-                  className="bg-card border-border"
+                  className={inputClass}
                 />
               </div>
               <div>
-                <label htmlFor="email" className="block text-sm font-medium mb-2">
+                <label
+                  htmlFor="email"
+                  className="mb-2 block text-sm font-medium text-foreground"
+                >
                   Email
                 </label>
                 <Input
@@ -119,11 +136,14 @@ export function AboutSection() {
                   }
                   placeholder="your@email.com"
                   required
-                  className="bg-card border-border"
+                  className={inputClass}
                 />
               </div>
               <div>
-                <label htmlFor="message" className="block text-sm font-medium mb-2">
+                <label
+                  htmlFor="message"
+                  className="mb-2 block text-sm font-medium text-foreground"
+                >
                   Message
                 </label>
                 <Textarea
@@ -135,7 +155,7 @@ export function AboutSection() {
                   placeholder="Tell me about your project or just say hi..."
                   rows={5}
                   required
-                  className="bg-card border-border resize-none"
+                  className={`${inputClass} resize-none`}
                 />
               </div>
               <Button
@@ -144,12 +164,10 @@ export function AboutSection() {
                 className="w-full bg-primary text-primary-foreground hover:bg-primary/90"
               >
                 {isSubmitting ? (
-                  <>
-                    <span className="animate-pulse">Sending...</span>
-                  </>
+                  <span className="animate-pulse">Sending...</span>
                 ) : (
                   <>
-                    <Send className="w-4 h-4 mr-2" />
+                    <Send className="h-4 w-4" />
                     Send Message
                   </>
                 )}
@@ -158,11 +176,35 @@ export function AboutSection() {
           </div>
         </div>
 
-        {/* Footer */}
-        <div className="mt-16 pt-8 border-t border-border text-center text-sm text-muted-foreground">
-          <p>© {new Date().getFullYear()} Dipesh Bist. Built with React & Tailwind.</p>
-        </div>
+        <footer className="mt-16 flex flex-col gap-4 border-t border-border pt-8 text-sm text-muted-foreground md:flex-row md:items-center md:justify-between">
+          <p>Copyright 2026 Dipesh Bist</p>
+          <div className="flex flex-wrap gap-4">
+            <a
+              href="https://github.com/Dipeshbist"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-primary"
+            >
+              GitHub
+            </a>
+            <a
+              href="https://www.linkedin.com/in/dipesh-bist-2a86b4282/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-primary"
+            >
+              LinkedIn
+            </a>
+            <a
+              href="mailto:dipeshbist150@gmail.com"
+              className="hover:text-primary"
+            >
+              Email
+            </a>
+          </div>
+        </footer>
       </div>
     </section>
   );
 }
+

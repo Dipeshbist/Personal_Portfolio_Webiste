@@ -1,67 +1,78 @@
-import { MapPin, Github, Linkedin, Mail } from "lucide-react";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Download, Github, Linkedin, Mail } from "lucide-react";
+
+const heroTech = ["NestJS", "ExpressJS", "React", "TypeScript", "PostgreSQL", "Prisma", "Shopify", "MQTT", "Docker"];
 
 export function HeroSection() {
-  return (
-    <section id="home" className="min-h-screen flex items-center justify-center pt-8 pb-24 md:pt-24 md:pb-16">
-      <div className="section-container">
-        <div className="flex flex-col items-center text-center md:flex-row md:text-left md:items-start md:gap-12 lg:gap-16">
-          {/* Avatar */}
-          <div className="mb-6 md:mb-0 md:flex-shrink-0">
-            <Avatar className="w-32 h-32 md:w-40 md:h-40 lg:w-48 lg:h-48 border-4 border-primary/20 glow-effect">
-              <AvatarImage src="https://api.dicebear.com/7.x/avataaars/svg?seed=Dipesh&backgroundColor=0f172a" alt="Dipesh Bist" />
-              <AvatarFallback className="bg-secondary text-2xl font-bold">DB</AvatarFallback>
-            </Avatar>
-          </div>
+  const resumeHref = `${import.meta.env.BASE_URL}resume.pdf`;
 
-          {/* Info */}
-          <div className="flex flex-col items-center md:items-start">
-            <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-2">
+  return (
+    <section id="home" className="pt-24 pb-16 md:pt-28">
+      <div className="section-container">
+        <div className="grid gap-12 md:grid-cols-[minmax(0,640px)_1fr] md:items-start">
+          <div>
+            <p className="mb-5 font-mono text-xs font-medium uppercase tracking-normal text-primary">
+              kathmandu, nepal
+            </p>
+            <h1 className="text-[34px] font-semibold leading-tight tracking-normal text-foreground md:text-5xl">
               Dipesh Bist
             </h1>
-            <p className="text-lg md:text-xl text-primary font-medium mb-3">
-              Junior Developer & IoT Enthusiast
+            <p className="mt-3 text-lg font-medium text-primary">
+              Full Stack Developer
             </p>
-            <div className="flex items-center gap-2 text-muted-foreground mb-6">
-              <MapPin className="w-4 h-4" />
-              <span>Kathmandu, Nepal</span>
+            <p className="mt-6 max-w-[640px] text-base leading-7 text-[#d5d5d5]">
+              I build and maintain production IoT platforms, AI-powered
+              applications, and enterprise web systems at Nepal Digital Systems.
+              I work across the full stack, from NestJS APIs and PostgreSQL
+              databases to React dashboards and Docker deployments.
+            </p>
+
+            <div className="mt-6 flex flex-wrap gap-2">
+              {heroTech.map((tech) => (
+                <span key={tech} className="tech-tag">
+                  {tech}
+                </span>
+              ))}
             </div>
 
-            <p className="text-muted-foreground max-w-lg mb-8 text-sm md:text-base leading-relaxed">
-              Building real-world IoT solutions at Nepal Digital Systems. Passionate about 
-              backend APIs, frontend dashboards, cloud infrastructure, and device data 
-              integration. Turning complex sensor data into actionable insights.
-            </p>
-
-            {/* Social Links */}
-            <div className="flex items-center gap-4">
+            <div className="mt-8 flex flex-wrap items-center gap-4">
               <a
-                href="https://github.com/dipeshbist"
+                href={resumeHref}
+                download
+                className="inline-flex h-10 items-center justify-center gap-2 rounded-md bg-primary px-4 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
+              >
+                <Download className="h-4 w-4" />
+                Download Resume
+              </a>
+              <a
+                href="https://github.com/Dipeshbist"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="glass-card p-3 rounded-lg card-hover text-muted-foreground hover:text-foreground"
+                className="text-muted-foreground transition-colors hover:text-primary"
                 aria-label="GitHub"
               >
-                <Github className="w-5 h-5" />
+                <Github className="h-5 w-5" />
               </a>
               <a
-                href="https://linkedin.com/in/dipeshbist"
+                href="https://www.linkedin.com/in/dipesh-bist-2a86b4282/"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="glass-card p-3 rounded-lg card-hover text-muted-foreground hover:text-foreground"
+                className="text-muted-foreground transition-colors hover:text-primary"
                 aria-label="LinkedIn"
               >
-                <Linkedin className="w-5 h-5" />
+                <Linkedin className="h-5 w-5" />
               </a>
               <a
-                href="mailto:dipesh@example.com"
-                className="glass-card p-3 rounded-lg card-hover text-muted-foreground hover:text-foreground"
+                href="mailto:dipeshbist150@gmail.com"
+                className="text-muted-foreground transition-colors hover:text-primary"
                 aria-label="Email"
               >
-                <Mail className="w-5 h-5" />
+                <Mail className="h-5 w-5" />
               </a>
             </div>
           </div>
+
+          {/* Future photo slot: <div className="aspect-[4/5] rounded-lg border border-border bg-card" /> */}
+          <div className="hidden md:block" aria-hidden="true" />
         </div>
       </div>
     </section>

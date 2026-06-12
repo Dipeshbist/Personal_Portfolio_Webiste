@@ -12,7 +12,7 @@ const Index = () => {
 
   useEffect(() => {
     const handleScroll = () => {
-      const sections = ["home", "expertise", "experience", "projects", "about"];
+      const sections = ["home", "skills", "experience", "projects", "contact"];
       const scrollPosition = window.scrollY + 150;
 
       for (const section of sections) {
@@ -46,7 +46,7 @@ const Index = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen overflow-x-hidden bg-background">
       <DesktopNav activeSection={activeSection} onNavigate={handleNavigate} />
       <MobileNav activeSection={activeSection} onNavigate={handleNavigate} />
 
